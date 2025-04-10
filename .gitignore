@@ -1,0 +1,55 @@
+# Virtuelle miljøer
+venv/
+env/
+ENV/
+
+# Python cache-filer
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Flask
+instance/
+.webassets-cache
+
+# Miljøvariabler
+.env
+
+# Database
+*.db
+*.sqlite
+
+# Uploadede filer
+app/static/uploads/menu/*
+app/static/uploads/bakery/*
+app/static/uploads/posters/*
+!app/static/uploads/menu/.gitkeep
+!app/static/uploads/bakery/.gitkeep
+!app/static/uploads/posters/.gitkeep
+
+# IDE-filer
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS-filer
+.DS_Store
+Thumbs.db

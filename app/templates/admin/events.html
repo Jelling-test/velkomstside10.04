@@ -1,0 +1,91 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <a href="{{ url_for('admin.create_event') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Tilføj ny begivenhed
+        </a>
+    </div>
+</div>
+
+{% if events %}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Billede</th>
+                <th>Titel</th>
+                <th>Dato</th>
+                <th>Sted</th>
+                <th>Status</th>
+                <th>Handlinger</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+            <tr>
+                <td>
+                    {% if event.image %}
+                    <img src="{{ url_for('static', filename='uploads/events/' + event.image) }}" alt="{{ event.title_da }}" class="img-thumbnail" style="max-width: 100px;">
+                    {% else %}
+                    <span class="text-muted">Intet billede</span>
+                    {% endif %}
+                </td>
+                <td>{{ event.title_da }}</td>
+                <td>
+                    {{ event.start_date.strftime('%d-%m-%Y %H:%M') }}
+                    <br>
+                    <small>Til: {{ event.end_date.strftime('%d-%m-%Y %H:%M') }}</small>
+                </td>
+                <td>{{ event.location }}</td>
+                <td>
+                    {% if event.is_active %}
+                    <span class="badge bg-success">Aktiv</span>
+                    {% else %}
+                    <span class="badge bg-danger">Inaktiv</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('admin.edit_event', id=event.id) }}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-edit"></i> Rediger
+                    </a>
+                    <button class="btn btn-sm btn-danger delete-item" data-id="{{ event.id }}">
+                        <i class="fas fa-trash"></i> Slet
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    Der er ingen begivenheder endnu. Klik på "Tilføj ny begivenhed" for at oprette en.
+</div>
+{% endif %}
+
+<!-- Skjult formular til sletning -->
+<form id="deleteForm" method="POST" style="display: none;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Tilføj event listeners til alle slet-knapper
+        document.querySelectorAll('.delete-item').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const itemId = this.getAttribute('data-id');
+                if (confirm('Er du sikker på, at du vil slette denne begivenhed?')) {
+                    // Opret en formular og indsend den via POST
+                    const form = document.getElementById('deleteForm');
+                    form.action = "{{ url_for('admin.delete_event', id=0) }}".replace('0', itemId);
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

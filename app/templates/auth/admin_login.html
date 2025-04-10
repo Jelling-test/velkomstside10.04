@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <h2 class="mb-0">{{ _('Admin Login') }}</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('auth.admin_login') }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.username.label(class="form-label") }}
+                        {{ form.username(class="form-control", placeholder=_('Indtast brugernavn')) }}
+                        {% for error in form.username.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control", placeholder=_('Indtast adgangskode')) }}
+                        {% for error in form.password.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-dark") }}
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="alert alert-warning mb-0">
+                    <i class="fas fa-exclamation-triangle"></i> {{ _('Kun for autoriseret personale.') }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

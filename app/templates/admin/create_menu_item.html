@@ -1,0 +1,137 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1>{{ title }}</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Dansk</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        {{ form.name_da.label(class="form-label") }}
+                        {{ form.name_da(class="form-control") }}
+                        {% for error in form.name_da.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.description_da.label(class="form-label") }}
+                        {{ form.description_da(class="form-control", rows=3) }}
+                        {% for error in form.description_da.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>English</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        {{ form.name_en.label(class="form-label") }}
+                        {{ form.name_en(class="form-control") }}
+                        {% for error in form.name_en.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.description_en.label(class="form-label") }}
+                        {{ form.description_en(class="form-control", rows=3) }}
+                        {% for error in form.description_en.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Deutsch</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        {{ form.name_de.label(class="form-label") }}
+                        {{ form.name_de(class="form-control") }}
+                        {% for error in form.name_de.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.description_de.label(class="form-label") }}
+                        {{ form.description_de(class="form-control", rows=3) }}
+                        {% for error in form.description_de.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Nederlands</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        {{ form.name_nl.label(class="form-label") }}
+                        {{ form.name_nl(class="form-control") }}
+                        {% for error in form.name_nl.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.description_nl.label(class="form-label") }}
+                        {{ form.description_nl(class="form-control", rows=3) }}
+                        {% for error in form.description_nl.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Generel information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        {{ form.price.label(class="form-label") }}
+                        {{ form.price(class="form-control") }}
+                        {% for error in form.price.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.image.label(class="form-label") }}
+                        {{ form.image(class="form-control") }}
+                        {% for error in form.image.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        {{ form.is_active(class="form-check-input") }}
+                        {{ form.is_active.label(class="form-check-label") }}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Gem</button>
+                <a href="{{ url_for('admin.menu') }}" class="btn btn-secondary">Annuller</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

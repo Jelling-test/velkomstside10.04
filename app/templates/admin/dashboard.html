@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1>{{ _('Admin Dashboard') }}</h1>
+        <p class="lead">{{ _('Velkommen til administrationsområdet for Jelling Camping.') }}</p>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card admin-card text-center h-100">
+            <div class="card-body">
+                <div class="admin-icon text-primary">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h5 class="card-title">{{ _('Café Menu') }}</h5>
+                <p class="card-text">{{ _('Administrer menupunkter i caféen.') }}</p>
+                <a href="{{ url_for('admin.menu') }}" class="btn btn-primary">{{ _('Administrer') }}</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card admin-card text-center h-100">
+            <div class="card-body">
+                <div class="admin-icon text-success">
+                    <i class="fas fa-bread-slice"></i>
+                </div>
+                <h5 class="card-title">{{ _('Bager') }}</h5>
+                <p class="card-text">{{ _('Administrer rundstykker og bagervarer.') }}</p>
+                <a href="{{ url_for('admin.bakery_items') }}" class="btn btn-success">{{ _('Administrer') }}</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card admin-card text-center h-100">
+            <div class="card-body">
+                <div class="admin-icon text-info">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h5 class="card-title">{{ _('Kalender') }}</h5>
+                <p class="card-text">{{ _('Administrer arrangementer og aktiviteter.') }}</p>
+                <a href="{{ url_for('admin.events') }}" class="btn btn-info text-white">{{ _('Administrer') }}</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 col-sm-6 mb-4">
+        <div class="card admin-card text-center h-100">
+            <div class="card-body">
+                <div class="admin-icon text-danger">
+                    <i class="fas fa-tag"></i>
+                </div>
+                <h5 class="card-title">{{ _('Kampagner') }}</h5>
+                <p class="card-text">{{ _('Administrer specialtilbud og kampagner.') }}</p>
+                <a href="{{ url_for('admin.promotions') }}" class="btn btn-danger">{{ _('Administrer') }}</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">{{ _('Café Åbningstider') }}</h3>
+            </div>
+            <div class="card-body">
+                <a href="{{ url_for('admin.cafe_hours') }}" class="btn btn-primary">{{ _('Rediger åbningstider') }}</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h3 class="mb-0">{{ _('Friluftsbadets Åbningstider') }}</h3>
+            </div>
+            <div class="card-body">
+                <p>{{ _('Administrer åbningstider og information om Jelling Friluftsbad.') }}</p>
+                <a href="{{ url_for('admin.pool_hours_admin') }}" class="btn btn-info text-white">{{ _('Administrer åbningstider') }}</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">{{ _('Rundstykkebestillinger') }}</h3>
+                <span class="badge bg-light text-dark">{{ bakery_orders_count }}</span>
+            </div>
+            <div class="card-body">
+                {% if recent_bakery_orders %}
+                    <h5>{{ _('Seneste bestillinger') }}</h5>
+                    <ul class="list-group">
+                        {% for order in recent_bakery_orders %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ order.user.booking_number }} - {{ order.user.last_name }}
+                                <span class="badge bg-primary rounded-pill">{{ order.order_date.strftime('%d/%m %H:%M') }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="mt-3">
+                        <a href="{{ url_for('admin.bakery_orders') }}" class="btn btn-success">{{ _('Se alle bestillinger') }}</a>
+                    </div>
+                {% else %}
+                    <p>{{ _('Ingen rundstykkebestillinger endnu.') }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">{{ _('Kampagnebestillinger') }}</h3>
+                <span class="badge bg-light text-dark">{{ promotion_orders_count }}</span>
+            </div>
+            <div class="card-body">
+                {% if recent_promotion_orders %}
+                    <h5>{{ _('Seneste bestillinger') }}</h5>
+                    <ul class="list-group">
+                        {% for order in recent_promotion_orders %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ order.user.booking_number }} - {{ order.promotion.title_da }}
+                                <span class="badge bg-primary rounded-pill">{{ order.order_date.strftime('%d/%m %H:%M') }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="mt-3">
+                        <a href="{{ url_for('admin.promotion_orders') }}" class="btn btn-danger">{{ _('Se alle bestillinger') }}</a>
+                    </div>
+                {% else %}
+                    <p>{{ _('Ingen kampagnebestillinger endnu.') }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">{{ _('Arrangementtilmeldinger') }}</h3>
+                <span class="badge bg-light text-dark">{{ event_registrations_count }}</span>
+            </div>
+            <div class="card-body">
+                {% if recent_event_registrations %}
+                    <h5>{{ _('Seneste tilmeldinger') }}</h5>
+                    <ul class="list-group">
+                        {% for registration in recent_event_registrations %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ registration.user.booking_number }} - {{ registration.event.title_da }}
+                                <span class="badge bg-primary rounded-pill">{{ registration.registration_date.strftime('%d/%m %H:%M') }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="mt-3">
+                        <a href="{{ url_for('admin.event_registrations') }}" class="btn btn-info text-white">{{ _('Se alle tilmeldinger') }}</a>
+                    </div>
+                {% else %}
+                    <p>{{ _('Ingen arrangementtilmeldinger endnu.') }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

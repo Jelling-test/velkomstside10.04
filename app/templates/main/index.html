@@ -1,0 +1,306 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="jumbotron bg-light p-4 mb-4 rounded">
+    <div class="container text-center">
+        <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Jelling Camping Logo" class="img-fluid" style="max-height: 150px;">
+        <p class="lead mt-3">{{ _('Vi håber, at du får et behageligt ophold hos os. Her finder du information om vores faciliteter og aktiviteter.') }}</p>
+    </div>
+</div>
+
+{% if promotions %}
+<div class="row mb-4">
+    <div class="col-md-6 mb-4">
+        <h2>{{ _('Aktuelle tilbud') }}</h2>
+        <div class="card">
+            <div class="card-body">
+                <div id="promotionCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for promotion in promotions %}
+                            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                {% if promotion.image %}
+                                    <img src="{{ url_for('static', filename='uploads/posters/' + promotion.image) }}" class="d-block w-100" alt="{{ promotion.title_da }}">
+                                {% endif %}
+                                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
+                                    <h5>{{ promotion.title_da }}</h5>
+                                    <p>{{ promotion.description_da|truncate(100) }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#promotionCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">{{ _('Forrige') }}</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#promotionCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">{{ _('Næste') }}</span>
+                    </button>
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{{ url_for('main.promotions') }}" class="btn btn-primary">{{ _('Se alle tilbud') }}</a>
+            </div>
+        </div>
+    </div>
+    
+    {% if events %}
+    <div class="col-md-6 mb-4">
+        <h2>{{ _('Kommende arrangementer') }}</h2>
+        <div class="card">
+            <div class="card-body">
+                <div class="list-group">
+                    {% for event in events %}
+                        <a href="{{ url_for('main.calendar') }}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ event.title_da }}</h5>
+                                <small>{{ event.start_date.strftime('%d/%m') }}</small>
+                            </div>
+                            <p class="mb-1">{{ event.description_da|truncate(100) }}</p>
+                            <small>{{ event.location }}</small>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{{ url_for('main.calendar') }}" class="btn btn-primary">{{ _('Se alle arrangementer') }}</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+{% if events and not promotions %}
+<div class="row mb-4">
+    <div class="col-md-6 offset-md-3 mb-4">
+        <h2>{{ _('Kommende arrangementer') }}</h2>
+        <div class="card">
+            <div class="card-body">
+                <div class="list-group">
+                    {% for event in events %}
+                        <a href="{{ url_for('main.calendar') }}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ event.title_da }}</h5>
+                                <small>{{ event.start_date.strftime('%d/%m') }}</small>
+                            </div>
+                            <p class="mb-1">{{ event.description_da|truncate(100) }}</p>
+                            <small>{{ event.location }}</small>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{{ url_for('main.calendar') }}" class="btn btn-primary">{{ _('Se alle arrangementer') }}</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row mt-4">
+    <div class="col-12">
+        <h2 class="text-center mb-4">{{ _('Hurtig adgang') }}</h2>
+    </div>
+    
+    <div class="col-md-4 col-sm-6">
+        <a href="{{ url_for('main.cafe') }}" class="btn btn-lg btn-primary home-button">
+            <i class="fas fa-utensils"></i> {{ _('Café & Restaurant') }}
+        </a>
+    </div>
+    
+    <div class="col-md-4 col-sm-6">
+        <a href="{{ url_for('main.bakery') }}" class="btn btn-lg btn-success home-button">
+            <i class="fas fa-bread-slice"></i> {{ _('Bestil rundstykker') }}
+        </a>
+    </div>
+    
+    <div class="col-md-4 col-sm-6">
+        <a href="{{ url_for('main.calendar') }}" class="btn btn-lg btn-info home-button">
+            <i class="fas fa-calendar-alt"></i> {{ _('Aktiviteter') }}
+        </a>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">{{ _('Café åbningstider') }}</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ _('Mandag') }}
+                        {% if cafe_hours[0].is_closed %}
+                            <span class="badge bg-danger">{{ _('Lukket') }}</span>
+                        {% else %}
+                            <span>{{ cafe_hours[0].open_time.strftime('%H:%M') }} - {{ cafe_hours[0].close_time.strftime('%H:%M') }}</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ _('Tirsdag') }}
+                        {% if cafe_hours[1].is_closed %}
+                            <span class="badge bg-danger">{{ _('Lukket') }}</span>
+                        {% else %}
+                            <span>{{ cafe_hours[1].open_time.strftime('%H:%M') }} - {{ cafe_hours[1].close_time.strftime('%H:%M') }}</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ _('Onsdag') }}
+                        {% if cafe_hours[2].is_closed %}
+                            <span class="badge bg-danger">{{ _('Lukket') }}</span>
+                        {% else %}
+                            <span>{{ cafe_hours[2].open_time.strftime('%H:%M') }} - {{ cafe_hours[2].close_time.strftime('%H:%M') }}</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ _('Torsdag') }}
+                        {% if cafe_hours[3].is_closed %}
+                            <span class="badge bg-danger">{{ _('Lukket') }}</span>
+                        {% else %}
+                            <span>{{ cafe_hours[3].open_time.strftime('%H:%M') }} - {{ cafe_hours[3].close_time.strftime('%H:%M') }}</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ _('Fredag') }}
+                        {% if cafe_hours[4].is_closed %}
+                            <span class="badge bg-danger">{{ _('Lukket') }}</span>
+                        {% else %}
+                            <span>{{ cafe_hours[4].open_time.strftime('%H:%M') }} - {{ cafe_hours[4].close_time.strftime('%H:%M') }}</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ _('Lørdag') }}
+                        {% if cafe_hours[5].is_closed %}
+                            <span class="badge bg-danger">{{ _('Lukket') }}</span>
+                        {% else %}
+                            <span>{{ cafe_hours[5].open_time.strftime('%H:%M') }} - {{ cafe_hours[5].close_time.strftime('%H:%M') }}</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ _('Søndag') }}
+                        {% if cafe_hours[6].is_closed %}
+                            <span class="badge bg-danger">{{ _('Lukket') }}</span>
+                        {% else %}
+                            <span>{{ cafe_hours[6].open_time.strftime('%H:%M') }} - {{ cafe_hours[6].close_time.strftime('%H:%M') }}</span>
+                        {% endif %}
+                    </li>
+                </ul>
+                <div class="alert alert-warning mt-3">
+                    <i class="fas fa-info-circle"></i> {{ _('OBS: Køkkenet lukker 30 min. før') }}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3 class="mb-0">{{ _('Nyttige informationer') }}</h3>
+            </div>
+            <div class="card-body">
+                <div class="accordion" id="infoAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                {{ _('Receptionen') }}
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#infoAccordion">
+                            <div class="accordion-body">
+                                <p>{{ _('Åbent dagligt') }}: 08:00 - 20:00</p>
+                                <p>{{ _('Telefon') }}: +45 81826300</p>
+                                <p>{{ _('Email') }}: info@jellingcamping.dk</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                {{ _('WiFi') }}
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#infoAccordion">
+                            <div class="accordion-body">
+                                <p>{{ _('Netværksnavn') }}: Jelling Camping Free WiFi</p>
+                                <p>{{ _('Adgangskode') }}: {{ _('Ingen adgangskode påkrævet') }}</p>
+                                <p>{{ _('WiFi er tilgængeligt på hele campingpladsen.') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                {{ _('Faciliteter') }}
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#infoAccordion">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li>{{ _('Moderne toilet- og badefaciliteter') }}</li>
+                                    <li>{{ _('Køkken med kogeplader og ovn') }}</li>
+                                    <li>{{ _('Vaskemaskine og tørretumbler') }}</li>
+                                    <li>{{ _('Legeplads til børn') }}</li>
+                                    <li>{{ _('Grillområde') }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                {{ _('Jelling Friluftsbad') }}
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#infoAccordion">
+                            <div class="accordion-body">
+                                {% if pool_hours %}
+                                <ul class="list-unstyled">
+                                    {% for period in pool_hours[:1] %}
+                                    <li><strong>{{ period.name_da }}:</strong> {{ period.start_date.strftime('%d/%m') }} - {{ period.end_date.strftime('%d/%m') }}</li>
+                                    {% if period.weekday_open_time and period.weekday_close_time %}
+                                    <li><strong>{{ _('Hverdage') }}:</strong> {{ period.weekday_open_time.strftime('%H:%M') }} - {{ period.weekday_close_time.strftime('%H:%M') }}</li>
+                                    {% endif %}
+                                    {% if period.weekend_open_time and period.weekend_close_time %}
+                                    <li><strong>{{ _('Weekend') }}:</strong> {{ period.weekend_open_time.strftime('%H:%M') }} - {{ period.weekend_close_time.strftime('%H:%M') }}</li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                                <a href="{{ url_for('main.info') }}" class="btn btn-sm btn-info mt-2">{{ _('Se alle åbningstider') }}</a>
+                                {% else %}
+                                <p>{{ _('Ingen aktuelle åbningstider. Se mere information på informationssiden.') }}</p>
+                                <a href="{{ url_for('main.info') }}" class="btn btn-sm btn-info mt-2">{{ _('Mere information') }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFive">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                {{ _('Nødkontakter') }}
+                            </button>
+                        </h2>
+                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#infoAccordion">
+                            <div class="accordion-body">
+                                <ul class="list-unstyled">
+                                    <li><strong>{{ _('Lægevagt i Jelling') }}:</strong> 08:00 - 16:00 // 7587 1033</li>
+                                    <li><strong>{{ _('Lægevagten') }}:</strong> 16:00 - 08:00 // 7011 0707</li>
+                                    <li><strong>{{ _('Apotek i Jelling') }}:</strong> 7571 0087</li>
+                                    <li><strong>{{ _('Tandlæge i Jelling') }}:</strong> 7587 1345</li>
+                                    <li><strong>{{ _('Politi / ambulance / brandvæsen') }}:</strong> <span class="badge bg-danger">112</span></li>
+                                </ul>
+                                <a href="{{ url_for('main.info') }}" class="btn btn-sm btn-danger mt-2">{{ _('Mere information') }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{{ url_for('main.info') }}" class="btn btn-primary">{{ _('Mere information') }}</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

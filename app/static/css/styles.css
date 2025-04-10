@@ -1,0 +1,194 @@
+/* Grundlæggende stilarter */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+/* Knapper på forsiden */
+.home-button {
+    display: block;
+    margin: 15px auto;
+    padding: 15px;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 350px;
+}
+
+.home-button i {
+    margin-right: 10px;
+}
+
+/* Kort stilarter */
+.card {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Menupunkt stilarter */
+.menu-item {
+    margin-bottom: 30px;
+}
+
+.menu-item img {
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+.menu-item-price {
+    font-weight: bold;
+    color: #007bff;
+    font-size: 1.2rem;
+}
+
+/* Event stilarter */
+.event-card {
+    height: 100%;
+}
+
+.event-date {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.event-location {
+    color: #6c757d;
+}
+
+/* Tilbuds stilarter */
+.promotion-card {
+    height: 100%;
+}
+
+.promotion-price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #dc3545;
+}
+
+.promotion-original-price {
+    text-decoration: line-through;
+    color: #6c757d;
+}
+
+.promotion-discount {
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+/* Admin panel stilarter */
+.admin-card {
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.admin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.admin-icon {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+/* Responsivt design for mobile enheder */
+@media (max-width: 767px) {
+    /* Større touch targets */
+    .btn, .nav-link, .dropdown-item {
+        padding: 0.6rem 1rem;
+        min-height: 44px;
+    }
+    
+    /* Bredere knapper på mobil */
+    .home-button {
+        width: 100%;
+        max-width: none;
+        margin: 10px auto;
+    }
+    
+    /* Forbedret læsbarhed */
+    body {
+        font-size: 16px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+    }
+    
+    /* Større afstand mellem elementer */
+    .card {
+        margin-bottom: 25px;
+    }
+    
+    /* Tilpas menu-items */
+    .menu-item {
+        padding: 15px;
+    }
+}
+
+/* Yderligere optimering for meget små skærme */
+@media (max-width: 576px) {
+    /* Tilpas header */
+    .navbar-brand img {
+        height: 30px;
+    }
+    
+    /* Optimér knapstørrelse */
+    .home-button {
+        padding: 12px;
+        font-size: 1rem;
+    }
+    
+    /* Mindre margin */
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+/* Optimering for touch-enheder */
+@media (hover: none) {
+    /* Større touch targets */
+    a, button, .btn, .nav-link, .dropdown-item, input[type="checkbox"], input[type="radio"] {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Fjern hover-effekter og erstat med active-effekter */
+    .btn:hover {
+        transform: none;
+    }
+    
+    .btn:active {
+        transform: scale(0.98);
+    }
+    
+    /* Større afstand mellem interaktive elementer */
+    .form-check {
+        margin-bottom: 15px;
+    }
+}

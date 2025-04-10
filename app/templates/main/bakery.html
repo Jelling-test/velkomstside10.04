@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1>{{ _('Bestil rundstykker og bagervarer') }}</h1>
+        <p class="lead">{{ _('Her kan du bestille friske rundstykker og bagervarer til afhentning næste morgen.') }}</p>
+    </div>
+</div>
+
+{% if not current_user.is_authenticated %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> {{ _('Du skal være logget ind for at bestille rundstykker.') }}
+        <a href="{{ url_for('auth.login', next=url_for('main.bakery')) }}" class="btn btn-primary ms-3">{{ _('Log ind') }}</a>
+    </div>
+{% elif not order_time_valid %}
+    <div class="alert alert-warning">
+        <i class="fas fa-clock"></i> {{ _('Bestilling af rundstykker er kun muligt mellem kl. ') }}{{ bakery_order_start_time }}{{ _(' og kl. ') }}{{ bakery_order_end_time }}
+    </div>
+{% elif already_ordered %}
+    <div class="alert alert-success">
+        <i class="fas fa-check-circle"></i> {{ _('Du har allerede bestilt rundstykker til i morgen. Din bestilling er registreret.') }}
+        <a href="{{ url_for('main.view_bakery_order') }}" class="btn btn-primary ms-3">{{ _('Se din bestilling') }}</a>
+    </div>
+{% else %}
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">{{ _('Bestil til i morgen') }}</h3>
+        </div>
+        <div class="card-body">
+            <form id="bakeryOrderForm" method="POST" action="{{ url_for('main.bakery') }}" onsubmit="return validateBakeryOrderForm()">
+                {{ form.hidden_tag() }}
+                
+                <div class="alert alert-info mb-4">
+                    <i class="fas fa-info-circle"></i> {{ _('Bestillinger skal afgives senest kl. ') }}{{ bakery_order_end_time }}{{ _('. Afhentning foregår i receptionen fra kl. 8:00.') }}
+                </div>
+                
+                <div class="row">
+                    {% for item in bakery_items %}
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100">
+                                {% if item.image %}
+                                    <img src="{{ url_for('static', filename='uploads/bakery/' + item.image) }}" class="card-img-top" alt="{{ item.name_da }}">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ item.name_da }}</h5>
+                                    <p class="card-text">{{ item.description_da }}</p>
+                                    <p class="menu-item-price">{{ "%.2f"|format(item.price) }} kr.</p>
+                                    
+                                    <div class="input-group">
+                                        <button type="button" class="btn btn-outline-secondary" onclick="updateQuantity('{{ item.id }}', -1)">-</button>
+                                        <input type="number" id="quantity_{{ item.id }}" name="quantity_{{ item.id }}" class="form-control text-center" value="0" min="0" max="20">
+                                        <button type="button" class="btn btn-outline-secondary" onclick="updateQuantity('{{ item.id }}', 1)">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-group mb-3">
+                    {{ form.notes.label(class="form-label") }}
+                    {{ form.notes(class="form-control", rows=3, placeholder=_('Eventuelle bemærkninger til din bestilling...')) }}
+                </div>
+                
+                <div class="d-grid gap-2">
+                    {{ form.submit(class="btn btn-success btn-lg") }}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endif %}
+
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">{{ _('Information om bestilling') }}</h3>
+    </div>
+    <div class="card-body">
+        <ul>
+            <li>{{ _('Bestillinger skal afgives senest kl. ') }}{{ bakery_order_end_time }}{{ _(' dagen før afhentning.') }}</li>
+            <li>{{ _('Afhentning foregår i receptionen fra kl. 8:00.') }}</li>
+            <li>{{ _('Betaling sker ved afhentning.') }}</li>
+            <li>{{ _('Har du særlige ønsker, kan du skrive dem i bemærkningsfeltet.') }}</li>
+            <li>{{ _('Hvis du har spørgsmål, er du velkommen til at kontakte receptionen.') }}</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

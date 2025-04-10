@@ -1,0 +1,103 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <a href="{{ url_for('admin.create_promotion') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Tilføj ny kampagne
+        </a>
+    </div>
+</div>
+
+{% if promotions %}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Billede</th>
+                <th>Titel</th>
+                <th>Pris</th>
+                <th>Periode</th>
+                <th>Status</th>
+                <th>Handlinger</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for promotion in promotions %}
+            <tr>
+                <td>
+                    {% if promotion.image %}
+                    <img src="{{ url_for('static', filename='uploads/posters/' + promotion.image) }}" alt="{{ promotion.title_da }}" class="img-thumbnail" style="max-width: 100px;">
+                    {% else %}
+                    <span class="text-muted">Intet billede</span>
+                    {% endif %}
+                </td>
+                <td>{{ promotion.title_da }}</td>
+                <td>
+                    <strong>{{ promotion.price }} kr.</strong>
+                    {% if promotion.original_price %}
+                    <br>
+                    <small class="text-muted"><del>{{ promotion.original_price }} kr.</del></small>
+                    {% endif %}
+                </td>
+                <td>
+                    {{ promotion.start_date.strftime('%d-%m-%Y') }}
+                    <br>
+                    <small>Til: {{ promotion.end_date.strftime('%d-%m-%Y') }}</small>
+                </td>
+                <td>
+                    {% if promotion.is_active %}
+                        {% if now > promotion.end_date %}
+                            <span class="badge bg-warning">Udløbet</span>
+                        {% elif now < promotion.start_date %}
+                            <span class="badge bg-info">Kommende</span>
+                        {% else %}
+                            <span class="badge bg-success">Aktiv</span>
+                        {% endif %}
+                    {% else %}
+                        <span class="badge bg-danger">Inaktiv</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('admin.edit_promotion', id=promotion.id) }}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-edit"></i> Rediger
+                    </a>
+                    <button class="btn btn-sm btn-danger delete-item" data-id="{{ promotion.id }}">
+                        <i class="fas fa-trash"></i> Slet
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    Der er ingen kampagner endnu. Klik på "Tilføj ny kampagne" for at oprette en.
+</div>
+{% endif %}
+
+<!-- Skjult formular til sletning -->
+<form id="deleteForm" method="POST" style="display: none;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Tilføj event listeners til alle slet-knapper
+        document.querySelectorAll('.delete-item').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const itemId = this.getAttribute('data-id');
+                if (confirm('Er du sikker på, at du vil slette denne kampagne?')) {
+                    // Opret en formular og indsend den via POST
+                    const form = document.getElementById('deleteForm');
+                    form.action = "{{ url_for('admin.delete_promotion', id=0) }}".replace('0', itemId);
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1>{{ _('Café og Restaurant') }}</h1>
+        <p class="lead">{{ _('Velkommen til vores café. Her kan du se vores menukort og åbningstider.') }}</p>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">{{ _('Åbningstider') }}</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ _('Mandag') }}
+                        {% if cafe_hours[0].is_closed %}
+                            <span class="badge bg-danger">{{ _('Lukket') }}</span>
+                        {% else %}
+                            <span>{{ cafe_hours[0].open_time.strftime('%H:%M') }} - {{ cafe_hours[0].close_time.strftime('%H:%M') }}</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ _('Tirsdag') }}
+                        {% if cafe_hours[1].is_closed %}
+                            <span class="badge bg-danger">{{ _('Lukket') }}</span>
+                        {% else %}
+                            <span>{{ cafe_hours[1].open_time.strftime('%H:%M') }} - {{ cafe_hours[1].close_time.strftime('%H:%M') }}</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ _('Onsdag') }}
+                        {% if cafe_hours[2].is_closed %}
+                            <span class="badge bg-danger">{{ _('Lukket') }}</span>
+                        {% else %}
+                            <span>{{ cafe_hours[2].open_time.strftime('%H:%M') }} - {{ cafe_hours[2].close_time.strftime('%H:%M') }}</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ _('Torsdag') }}
+                        {% if cafe_hours[3].is_closed %}
+                            <span class="badge bg-danger">{{ _('Lukket') }}</span>
+                        {% else %}
+                            <span>{{ cafe_hours[3].open_time.strftime('%H:%M') }} - {{ cafe_hours[3].close_time.strftime('%H:%M') }}</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ _('Fredag') }}
+                        {% if cafe_hours[4].is_closed %}
+                            <span class="badge bg-danger">{{ _('Lukket') }}</span>
+                        {% else %}
+                            <span>{{ cafe_hours[4].open_time.strftime('%H:%M') }} - {{ cafe_hours[4].close_time.strftime('%H:%M') }}</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ _('Lørdag') }}
+                        {% if cafe_hours[5].is_closed %}
+                            <span class="badge bg-danger">{{ _('Lukket') }}</span>
+                        {% else %}
+                            <span>{{ cafe_hours[5].open_time.strftime('%H:%M') }} - {{ cafe_hours[5].close_time.strftime('%H:%M') }}</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ _('Søndag') }}
+                        {% if cafe_hours[6].is_closed %}
+                            <span class="badge bg-danger">{{ _('Lukket') }}</span>
+                        {% else %}
+                            <span>{{ cafe_hours[6].open_time.strftime('%H:%M') }} - {{ cafe_hours[6].close_time.strftime('%H:%M') }}</span>
+                        {% endif %}
+                    </li>
+                </ul>
+                <div class="alert alert-warning mt-3">
+                    <i class="fas fa-info-circle"></i> {{ _('OBS: Køkkenet lukker 30 min. før') }}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8 mb-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">{{ _('Om vores café') }}</h3>
+            </div>
+            <div class="card-body">
+                <p>{{ _('Vores café tilbyder et bredt udvalg af mad og drikke. Vi har alt fra lette snacks til større måltider, så der er noget for enhver smag.') }}</p>
+                <p>{{ _('Vi lægger vægt på kvalitet og bruger så vidt muligt lokale råvarer. Vores køkken tilbyder både traditionelle danske retter og internationale favoritter.') }}</p>
+                <p>{{ _('Har du særlige ønsker eller allergier, er du velkommen til at spørge personalet. Vi vil gøre vores bedste for at imødekomme dine behov.') }}</p>
+                
+                <div class="alert alert-info mt-3">
+                    <i class="fas fa-info-circle"></i> {{ _('Husk at tjekke vores specialtilbud! Vi har ofte særlige tilbud på udvalgte retter.') }}
+                </div>
+                
+                <div class="mt-3">
+                    <a href="{{ url_for('main.promotions') }}" class="btn btn-danger">
+                        <i class="fas fa-tag"></i> {{ _('Se specialtilbud') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h2>{{ _('Menukort') }}</h2>
+    </div>
+</div>
+
+{% if menu_items %}
+    <div class="row">
+        {% for item in menu_items %}
+            <div class="col-md-6 menu-item">
+                <div class="card h-100">
+                    {% if item.image %}
+                        <img src="{{ url_for('static', filename='uploads/menu/' + item.image) }}" class="card-img-top" alt="{{ item.name_da }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h4 class="card-title">{{ item.name_da }}</h4>
+                        <p class="card-text">{{ item.description_da }}</p>
+                        <p class="menu-item-price">{{ "%.2f"|format(item.price) }} kr.</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> {{ _('Der er ingen menupunkter tilgængelige i øjeblikket.') }}
+    </div>
+{% endif %}
+{% endblock %}

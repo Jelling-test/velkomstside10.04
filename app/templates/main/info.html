@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">{{ _('Information') }}</h1>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">{{ _('WiFi') }}</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>{{ _('Netværksnavn') }}:</strong> Jelling Camping Free WiFi</p>
+                    <p><strong>{{ _('Adgangskode') }}:</strong> {{ _('Ingen adgangskode påkrævet') }}</p>
+                    <p>{{ _('WiFi er tilgængeligt på hele campingpladsen.') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">{{ _('Reception') }}</h3>
+                </div>
+                <div class="card-body">
+                    <p>{{ _('Åbent dagligt') }}: 08:00 - 20:00</p>
+                    <p><strong>{{ _('Telefon') }}:</strong> +45 81826300</p>
+                    <p><strong>{{ _('Email') }}:</strong> info@jellingcamping.dk</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div id="emergency" class="card h-100 shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="card-title mb-0">{{ _('Nødkontakter') }}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>{{ _('Lægevagt i Jelling') }}:</strong> 08:00 - 16:00 // 7587 1033</p>
+                            <p><strong>{{ _('Lægevagten') }}:</strong> 16:00 - 08:00 // 7011 0707</p>
+                            <p><strong>{{ _('Apotek i Jelling') }}:</strong> 7571 0087</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>{{ _('Tandlæge i Jelling') }}:</strong> 7587 1345</p>
+                            <p><strong>{{ _('Politi / ambulance / brandvæsen') }}:</strong> <span class="badge bg-danger p-2">112</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if pool_hours %}
+    <h2 id="pool" class="text-center my-4">{{ _('Jelling Friluftsbad') }}</h2>
+    <div class="row">
+        {% for period in pool_hours %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h3 class="card-title mb-0">{{ period.name_da }}</h3>
+                    <small>{{ period.start_date.strftime('%d/%m') }} - {{ period.end_date.strftime('%d/%m') }}</small>
+                </div>
+                <div class="card-body">
+                    {% if period.description_da %}
+                    <p>{{ period.description_da }}</p>
+                    {% endif %}
+                    
+                    {% if period.weekday_open_time and period.weekday_close_time %}
+                    <p class="mb-3"><strong>{{ _('Hverdage') }}:</strong> <span class="badge bg-primary p-2">{{ period.weekday_open_time.strftime('%H:%M') }} - {{ period.weekday_close_time.strftime('%H:%M') }}</span></p>
+                    {% endif %}
+                    
+                    {% if period.weekend_open_time and period.weekend_close_time %}
+                    <p class="mb-3"><strong>{{ _('Weekend') }}:</strong> <span class="badge bg-primary p-2">{{ period.weekend_open_time.strftime('%H:%M') }} - {{ period.weekend_close_time.strftime('%H:%M') }}</span></p>
+                    {% endif %}
+                    
+                    {% if period.special_note_da %}
+                    <div class="alert alert-info mt-3">
+                        {{ period.special_note_da }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h3 class="card-title mb-0">{{ _('Jelling Friluftsbad') }}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>{{ _('Åbningstider 2025') }}</h4>
+                            <p><strong>{{ _('Sæson') }}:</strong> 7. juni - 31. august 2025</p>
+                            <p><strong>{{ _('Morgensvømning') }}:</strong> Mandag-fredag</p>
+                            <p><strong>{{ _('Temperatur') }}:</strong> Altid min. 25 grader</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>{{ _('Faciliteter') }}</h4>
+                            <ul>
+                                <li>25-meter bassin med 1, 3 og 5-meter vipper</li>
+                                <li>Børnebassin</li>
+                                <li>Soppebassin med lille vandrutsjebane</li>
+                                <li>Beachvolley, hoppeborg og trampolin</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="https://www.vejle.dk/borger/oplev-og-fritid/sport-og-idraet/svoemmehaller-og-friluftsbade/jelling-friluftsbad/" class="btn btn-info" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> {{ _('Se mere på Jelling Friluftsbads hjemmeside') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4 mb-5">
+        <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg">{{ _('Tilbage til forsiden') }}</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,160 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1>Café Åbningstider</h1>
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <h4>Mandag</h4>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check mb-2">
+                                {{ form.monday_is_closed(class="form-check-input") }}
+                                {{ form.monday_is_closed.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.monday_open_time.label(class="form-label") }}
+                            {{ form.monday_open_time(class="form-control") }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.monday_close_time.label(class="form-label") }}
+                            {{ form.monday_close_time(class="form-control") }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <h4>Tirsdag</h4>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check mb-2">
+                                {{ form.tuesday_is_closed(class="form-check-input") }}
+                                {{ form.tuesday_is_closed.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.tuesday_open_time.label(class="form-label") }}
+                            {{ form.tuesday_open_time(class="form-control") }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.tuesday_close_time.label(class="form-label") }}
+                            {{ form.tuesday_close_time(class="form-control") }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <h4>Onsdag</h4>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check mb-2">
+                                {{ form.wednesday_is_closed(class="form-check-input") }}
+                                {{ form.wednesday_is_closed.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.wednesday_open_time.label(class="form-label") }}
+                            {{ form.wednesday_open_time(class="form-control") }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.wednesday_close_time.label(class="form-label") }}
+                            {{ form.wednesday_close_time(class="form-control") }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <h4>Torsdag</h4>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check mb-2">
+                                {{ form.thursday_is_closed(class="form-check-input") }}
+                                {{ form.thursday_is_closed.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.thursday_open_time.label(class="form-label") }}
+                            {{ form.thursday_open_time(class="form-control") }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.thursday_close_time.label(class="form-label") }}
+                            {{ form.thursday_close_time(class="form-control") }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <h4>Fredag</h4>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check mb-2">
+                                {{ form.friday_is_closed(class="form-check-input") }}
+                                {{ form.friday_is_closed.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.friday_open_time.label(class="form-label") }}
+                            {{ form.friday_open_time(class="form-control") }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.friday_close_time.label(class="form-label") }}
+                            {{ form.friday_close_time(class="form-control") }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <h4>Lørdag</h4>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check mb-2">
+                                {{ form.saturday_is_closed(class="form-check-input") }}
+                                {{ form.saturday_is_closed.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.saturday_open_time.label(class="form-label") }}
+                            {{ form.saturday_open_time(class="form-control") }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.saturday_close_time.label(class="form-label") }}
+                            {{ form.saturday_close_time(class="form-control") }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <h4>Søndag</h4>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check mb-2">
+                                {{ form.sunday_is_closed(class="form-check-input") }}
+                                {{ form.sunday_is_closed.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.sunday_open_time.label(class="form-label") }}
+                            {{ form.sunday_open_time(class="form-control") }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.sunday_close_time.label(class="form-label") }}
+                            {{ form.sunday_close_time(class="form-control") }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary">Gem ændringer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

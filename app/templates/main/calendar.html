@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1>{{ _('Aktiviteter og arrangementer') }}</h1>
+        <p class="lead">{{ _('Her kan du se alle kommende arrangementer og aktiviteter på Jelling Camping.') }}</p>
+    </div>
+</div>
+
+{% if events %}
+    <div class="row">
+        {% for event in events %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card event-card" data-bs-toggle="modal" data-bs-target="#eventModal{{ event.id }}">
+                    {% if event.image %}
+                        <img src="{{ url_for('static', filename='uploads/events/' + event.image) }}" class="card-img-top" alt="{{ event.title_da }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h4 class="card-title">{{ event.title_da }}</h4>
+                        
+                        <div class="event-date mb-3">
+                            <i class="fas fa-calendar-alt"></i> 
+                            {% if event.start_date.date() == event.end_date.date() %}
+                                {{ event.start_date.strftime('%d/%m/%Y') }} 
+                                {{ event.start_date.strftime('%H:%M') }} - {{ event.end_date.strftime('%H:%M') }}
+                            {% else %}
+                                {{ event.start_date.strftime('%d/%m/%Y') }} - {{ event.end_date.strftime('%d/%m/%Y') }}
+                            {% endif %}
+                        </div>
+                        
+                        {% if event.location %}
+                        <div class="event-location mb-3">
+                            <i class="fas fa-map-marker-alt"></i> {{ event.location }}
+                        </div>
+                        {% endif %}
+                        
+                        <p class="card-text">{{ event.description_da }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal for event {{ event.id }} -->
+            <div class="modal fade" id="eventModal{{ event.id }}" tabindex="-1" aria-labelledby="eventModalLabel{{ event.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="eventModalLabel{{ event.id }}">{{ event.title_da }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {% if event.image %}
+                                <div class="text-center mb-4">
+                                    <img src="{{ url_for('static', filename='uploads/events/' + event.image) }}" class="img-fluid" alt="{{ event.title_da }}">
+                                </div>
+                            {% endif %}
+                            
+                            <div class="event-details">
+                                <div class="event-date mb-3">
+                                    <i class="fas fa-calendar-alt"></i> 
+                                    {% if event.start_date.date() == event.end_date.date() %}
+                                        {{ event.start_date.strftime('%d/%m/%Y') }} 
+                                        {{ event.start_date.strftime('%H:%M') }} - {{ event.end_date.strftime('%H:%M') }}
+                                    {% else %}
+                                        {{ event.start_date.strftime('%d/%m/%Y') }} - {{ event.end_date.strftime('%d/%m/%Y') }}
+                                    {% endif %}
+                                </div>
+                                
+                                {% if event.location %}
+                                <div class="event-location mb-3">
+                                    <i class="fas fa-map-marker-alt"></i> {{ event.location }}
+                                </div>
+                                {% endif %}
+                                
+                                <p>{{ event.description_da }}</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Luk') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> {{ _('Der er ingen kommende arrangementer i øjeblikket.') }}
+    </div>
+{% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Gør hele event-kortet klikbart
+        document.querySelectorAll('.event-card').forEach(function(card) {
+            card.style.cursor = 'pointer';
+        });
+    });
+</script>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

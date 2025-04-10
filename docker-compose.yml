@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    container_name: jelling_camping_velkomst
+    restart: always
+    ports:
+      - "5000:5000"
+    volumes:
+      # Bevar database og uploads mellem container-genstart
+      - ./instance:/app/instance
+      - ./app/static/uploads:/app/app/static/uploads
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=production
+      - SECRET_KEY=${SECRET_KEY}
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - SMTP_SERVER=${SMTP_SERVER}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - EMAIL_FROM=${EMAIL_FROM}
+      - ADMIN_USERNAME=${ADMIN_USERNAME}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - BAKERY_ORDER_START_TIME=${BAKERY_ORDER_START_TIME}
+      - BAKERY_ORDER_END_TIME=${BAKERY_ORDER_END_TIME}
+
+# Hvis du vil køre med en separat database-container, kan du tilføje:
+#  db:
+#    image: postgres:13
+#    container_name: jelling_camping_db
+#    restart: always
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
+#    environment:
+#      - POSTGRES_USER=${DB_USER}
+#      - POSTGRES_PASSWORD=${DB_PASSWORD}
+#      - POSTGRES_DB=${DB_NAME}
+#
+# volumes:
+#  postgres_data:
