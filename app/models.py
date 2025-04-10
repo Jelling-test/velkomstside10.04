@@ -143,6 +143,7 @@ class PromotionOrder(db.Model):
     quantity = db.Column(db.Integer, default=1)
     email = db.Column(db.String(120), nullable=False)
     mac_address = db.Column(db.String(20))
+    comment = db.Column(db.Text, nullable=True)
     is_confirmed = db.Column(db.Boolean, default=False)
 
     user = db.relationship('User', backref='promotion_orders')

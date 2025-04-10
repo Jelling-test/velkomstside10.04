@@ -177,6 +177,7 @@ def order_promotion(id):
             quantity=form.quantity.data,
             email=form.email.data,
             mac_address=request.remote_addr,
+            comment=form.comment.data,
             is_confirmed=True
         )
         db.session.add(order)

@@ -10,6 +10,7 @@ class BakeryOrderForm(FlaskForm):
 class PromotionOrderForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     quantity = IntegerField('Antal', validators=[DataRequired(), NumberRange(min=1)], default=1)
+    comment = TextAreaField('Kommentar', validators=[Optional()])
     submit = SubmitField('Bestil')
 
 class EventRegistrationForm(FlaskForm):

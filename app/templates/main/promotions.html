@@ -42,7 +42,7 @@
                             {% if promotion.is_ordered %}
                                 <button class="btn btn-secondary w-100" disabled>{{ _('Allerede bestilt') }}</button>
                             {% else %}
-                                <form method="POST" action="{{ url_for('main.order_promotion', promotion_id=promotion.id) }}">
+                                <form method="POST" action="{{ url_for('main.order_promotion', id=promotion.id) }}">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                     <button type="submit" class="btn btn-danger w-100">{{ _('Bestil nu') }}</button>
                                 </form>
