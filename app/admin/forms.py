@@ -31,9 +31,11 @@ class BakeryItemForm(FlaskForm):
     name_en = StringField('Navn (Engelsk)', validators=[DataRequired()])
     name_de = StringField('Navn (Tysk)', validators=[DataRequired()])
     name_nl = StringField('Navn (Hollandsk)', validators=[DataRequired()])
-    name_fi = StringField('Navn (Finsk)', validators=[Optional()])
-    name_no = StringField('Navn (Norsk)', validators=[Optional()])
-    name_sv = StringField('Navn (Svensk)', validators=[Optional()])
+    
+    allergene_da = StringField('Allergener (Dansk)', validators=[Optional()])
+    allergene_en = StringField('Allergener (Engelsk)', validators=[Optional()])
+    allergene_de = StringField('Allergener (Tysk)', validators=[Optional()])
+    allergene_nl = StringField('Allergener (Hollandsk)', validators=[Optional()])
     
     price = FloatField('Pris', validators=[DataRequired(), NumberRange(min=0)])
     image = FileField('Billede', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Kun billeder tilladt')])

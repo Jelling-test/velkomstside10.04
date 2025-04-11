@@ -62,6 +62,10 @@ class BakeryItem(db.Model):
     name_no = db.Column(db.String(100))
     name_sv = db.Column(db.String(100))
     price = db.Column(db.Float)
+    allergene_da = db.Column(db.String(255), nullable=True)
+    allergene_en = db.Column(db.String(255), nullable=True)
+    allergene_de = db.Column(db.String(255), nullable=True)
+    allergene_nl = db.Column(db.String(255), nullable=True)
     image = db.Column(db.String(255))
     is_active = db.Column(db.Boolean, default=True)
 

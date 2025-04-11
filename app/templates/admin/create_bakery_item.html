@@ -19,6 +19,14 @@
                         <div class="text-danger">{{ error }}</div>
                         {% endfor %}
                     </div>
+                    <div class="mb-3">
+                        {{ form.allergene_da.label(class="form-label") }}
+                        {{ form.allergene_da(class="form-control") }}
+                        <small class="form-text text-muted">Adskil allergener med komma, f.eks. "Gluten, Mælk, Nødder"</small>
+                        {% for error in form.allergene_da.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
             
@@ -31,6 +39,14 @@
                         {{ form.name_en.label(class="form-label") }}
                         {{ form.name_en(class="form-control") }}
                         {% for error in form.name_en.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.allergene_en.label(class="form-label") }}
+                        {{ form.allergene_en(class="form-control") }}
+                        <small class="form-text text-muted">Separate allergens with commas, e.g. "Gluten, Milk, Nuts"</small>
+                        {% for error in form.allergene_en.errors %}
                         <div class="text-danger">{{ error }}</div>
                         {% endfor %}
                     </div>
@@ -49,6 +65,14 @@
                         <div class="text-danger">{{ error }}</div>
                         {% endfor %}
                     </div>
+                    <div class="mb-3">
+                        {{ form.allergene_de.label(class="form-label") }}
+                        {{ form.allergene_de(class="form-control") }}
+                        <small class="form-text text-muted">Allergene mit Kommas trennen, z.B. "Gluten, Milch, Nüsse"</small>
+                        {% for error in form.allergene_de.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
             
@@ -64,48 +88,11 @@
                         <div class="text-danger">{{ error }}</div>
                         {% endfor %}
                     </div>
-                </div>
-            </div>
-            
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5>Suomi</h5>
-                </div>
-                <div class="card-body">
                     <div class="mb-3">
-                        {{ form.name_fi.label(class="form-label") }}
-                        {{ form.name_fi(class="form-control") }}
-                        {% for error in form.name_fi.errors %}
-                        <div class="text-danger">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5>Norsk</h5>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        {{ form.name_no.label(class="form-label") }}
-                        {{ form.name_no(class="form-control") }}
-                        {% for error in form.name_no.errors %}
-                        <div class="text-danger">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5>Svenska</h5>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        {{ form.name_sv.label(class="form-label") }}
-                        {{ form.name_sv(class="form-control") }}
-                        {% for error in form.name_sv.errors %}
+                        {{ form.allergene_nl.label(class="form-label") }}
+                        {{ form.allergene_nl(class="form-control") }}
+                        <small class="form-text text-muted">Scheid allergenen met komma's, bijv. "Gluten, Melk, Noten"</small>
+                        {% for error in form.allergene_nl.errors %}
                         <div class="text-danger">{{ error }}</div>
                         {% endfor %}
                     </div>
