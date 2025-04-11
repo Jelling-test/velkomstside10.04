@@ -69,9 +69,37 @@ def cafe():
 def bakery():
     bakery_items = BakeryItem.query.filter_by(is_active=True).order_by(BakeryItem.name_da).all()
     
+    # Tilføj variabler, der er nødvendige for skabelonen
+    form = BakeryOrderForm()
+    
+    # Tjek bestillingstid
+    current_hour = datetime.now().hour
+    start_time = current_app.config.get('BAKERY_ORDER_START_TIME', 10)
+    end_time = current_app.config.get('BAKERY_ORDER_END_TIME', 5)
+    
+    if end_time < start_time:
+        order_time_valid = current_hour >= start_time or current_hour < end_time
+    else:
+        order_time_valid = current_hour >= start_time and current_hour < end_time
+    
+    # Tjek om brugeren allerede har bestilt
+    already_ordered = False
+    if current_user.is_authenticated:
+        tomorrow = date.today() + timedelta(days=1)
+        existing_order = BakeryOrder.query.filter_by(
+            user_id=current_user.id,
+            delivery_date=tomorrow
+        ).first()
+        already_ordered = existing_order is not None
+    
     return render_template('main/bakery.html', 
-                           title='Rundstykker og Bageri',
-                           bakery_items=bakery_items)
+                          title='Rundstykker og Bageri',
+                          bakery_items=bakery_items,
+                          form=form,
+                          order_time_valid=order_time_valid,
+                          bakery_order_start_time=f"{start_time}:00",
+                          bakery_order_end_time=f"{end_time}:00",
+                          already_ordered=already_ordered)
 
 @bp.route('/calendar')
 def calendar():
